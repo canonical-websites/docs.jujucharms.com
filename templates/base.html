@@ -83,13 +83,9 @@
         background-color: #022935;
       }
 
-
-
       .p-navigation a, .p-navigation a:focus, .p-navigation a:hover, .p-navigation a:visited {
         color: #fff;
       }
-
-
 
       .p-navigation__link > a:hover {
         background-color: #011e26;
@@ -156,37 +152,40 @@
         padding-top: 0.5rem;
         padding-bottom: 1rem;
       }
+
       .lightbox-wrapper img {
         width: auto;
         height: auto;
       }
+
       .lightbox-wrapper .meta {
         display: none;
       }
+
       .lightbox.p-link--external:after {
         display: none;
       }
 
       /* Heading anchors */
-      .linkable {
-        display: inline-block;
+      .linkable-heading {
         position: relative;
       }
-      .linkable:hover:before {
+
+      .linkable-heading:hover .linkable-heading__icon {
+        opacity: 1;
+      }
+
+      .linkable-heading__icon {
+        opacity: 0;
         display: block;
-        content: url("https://assets.ubuntu.com/v1/994e60f9-get-link-url_16.svg");
         position: absolute;
         top: 50%;
-        margin-top: -16px;
-        left: -1.25rem;
+        margin-top: -0.5rem !important;
+        left: -1.5rem;
+        border: 0 !important;
+        margin: 0;
+        transition: opacity 0.15s;
       }
-
-      @media (min-width: 960px) {
-        .linkable:hover:before {
-          left: -1.75rem;
-        }
-      }
-
     </style>
 
     <script src="/static/js/highlight.pack.js"></script>
@@ -213,15 +212,27 @@
         var matches = container.querySelectorAll("h1, h2, h3, h4, h5, h6").forEach(function (heading) {
           // Only proceed if headings have an id attribute
           if (heading.hasAttribute("id")) {
+            // Wrap heading in container
+            const container = document.createElement('div');
+            // Add classname to wrapper
+            container.classList.add("linkable-heading");
+            // Wrap the container around exisiting heading
+            wrap(heading, container);
+            // Create link icon
+            const linkIcon = document.createElement('img');
+            linkIcon.setAttribute("src", "https://assets.ubuntu.com/v1/994e60f9-get-link-url_16.svg");
+            linkIcon.classList.add("linkable-heading__icon");
             // Grab each id in each heading
             const anchorLocation = heading.getAttribute("id");
-            // create wrapper container
+            // create link wrapper
             const anchor = document.createElement('a');
             // Assign each href to the link
             anchor.setAttribute("href", `#` + anchorLocation);
-            // Add a class of linkable to each link
-            anchor.classList.add("linkable");
-            wrap(heading, anchor);
+            // Insert link before heading
+            heading.before(linkIcon);
+            // Wrap the link icon with a link to #location  
+            wrap(linkIcon, anchor);
+
           }
         });
       });
@@ -250,9 +261,7 @@
 
           <form id="search" class="p-search-box" action="https://www.ubuntu.com/search">
             <input type="search" class="p-search-box__input" name="q" placeholder="Search Juju docs" required="">
-
-              <input type="hidden" name="domain" value="docs.jujucharms.com" />
-
+            <input type="hidden" name="domain" value="docs.jujucharms.com" />
             <button type="reset" class="p-search-box__reset u-no-margin--right" alt="reset"><i class="p-icon--close"></i></button>
             <button type="submit" class="p-search-box__button" alt="search"><i class="p-icon--search"></i></button>
           </form>
