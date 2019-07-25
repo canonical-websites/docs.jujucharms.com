@@ -169,6 +169,9 @@
       /* Heading anchors */
       .linkable-heading {
         position: relative;
+        margin-left: -1rem;
+        padding-left: 1rem;
+
       }
 
       .linkable-heading:hover .linkable-heading__icon {
@@ -181,7 +184,7 @@
         position: absolute;
         top: 50%;
         margin-top: -0.5rem !important;
-        left: -1.5rem;
+        left: -0.5rem;
         border: 0 !important;
         margin: 0;
         transition: opacity 0.15s;
@@ -230,7 +233,7 @@
             anchor.setAttribute("href", `#` + anchorLocation);
             // Insert link before heading
             heading.before(linkIcon);
-            // Wrap the link icon with a link to #location  
+            // Wrap the link icon with a link to #location
             wrap(linkIcon, anchor);
 
           }
